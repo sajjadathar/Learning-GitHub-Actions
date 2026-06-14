@@ -2,7 +2,10 @@ name: my-first-workflow
 # To get trigger on every push in this repo in any branch
 on:
   push:
-
+    branches: 
+      - dev
+      - 'feature-*'
+      - main
 
 jobs:
   job1:  
@@ -27,27 +30,6 @@ jobs:
         with:
           name: single_file
           path: ./myartifact.txt
-      - name: upload from directory
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: directory_artifact
-          path: artifacts/
-      - name: upload from multiple paths
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: multiple_paths
-          path: |
-            ./myartifact.txt
-            artifacts/
-      - name: upload from multiple paths with exclusions
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: multiple_paths_with_exclusions
-          path: |
-            ./myartifact.txt
-            artifacts/
-            !**/hostname.txt
-
   job2:  
     name: JOB2
     needs: job1
@@ -65,57 +47,3 @@ jobs:
         run: |
           pwd
           ls -ltr
-
-  job3:  
-    name: JOB3
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: checking current directory
-        run: |
-          pwd
-          ls -ltr
-      - name: download directory
-        uses: actions/download-artifact@v8.0.0
-        with:
-          name: directory_artifact
-      - name: checking current directory post download
-        run: |
-          pwd
-          ls -ltr
-
-
-  job4:  
-    name: JOB4
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: creating custom folder for download
-        run: |
-          mkdir -p single_file
-          mkdir -p download_directory
-      - name: checking current directory
-        run: |
-          pwd
-          ls -ltr
-      - name: download single file
-        uses: actions/download-artifact@v8.0.0
-        with:
-          name: single_file
-          path: single_file
-      - name: download directory
-        uses: actions/download-artifact@v8.0.0
-        with:
-          name: directory_artifact
-          path: download_directory
-      - name: checking current directory post download
-        run: |
-          pwd
-          echo "CHECKING SINGLR FILE DIRECTORY"
-          ls -ltr single_file
-          echo "CHECKING DIRECTORY ARTIFACT"
-          ls -ltr download_directory
-          
-            
-        
-        
