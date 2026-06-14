@@ -57,7 +57,7 @@ jobs:
           pwd
           ls -ltr
       - name: download single file
-        uses: ctions/download-artifact@v8.0.0
+        uses: actions/download-artifact@v8.0.0
         with:
           name: single_file
           path: ./myartifact
