@@ -7,7 +7,10 @@ on:
   pull_request:
     branches:
       - main
-
+env:
+  ENV_TYPE: DEV
+  APP_USER: thinknyx
+  APP_PORT: 80
 jobs:
   job1:  
     name: JOB1
@@ -44,6 +47,10 @@ jobs:
         uses: actions/download-artifact@v8.0.0
         with:
           name: single_file
+      - name: Refering Environment variables
+        run:  |
+          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
+          echo "[INFO] once deployed the application will be accessable at $APP_PORT."
       - name: checking current directory post download
         run: |
           pwd
