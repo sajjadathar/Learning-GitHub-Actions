@@ -25,6 +25,14 @@ jobs:
       - name: Install Dependencies
         run: uv sync
       - name: Run Unit Test
-        run: uv run pytest -v
+        run: |
+          mkdir reports/
+          uv run pytest --junitxml=reports/unit-tests-results.xml --cov=. --cov-report=term-missing -v
+      - name: Upload Code Coverage Report
+        uses: actions/upload-artifact@v7.0.0
+        with: 
+          name: unit-test-report
+          path: reports/
+
 
           
