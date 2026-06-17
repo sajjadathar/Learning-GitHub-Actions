@@ -108,11 +108,11 @@ jobs:
         with: 
           context: .
           file: ./Dockerfile
-          tags: github_actions_fastapi_app:${{ steps.vars.outputs.IMAGE_TAG }}
+          tags: github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }}
           push: false
           load: true
       - name: Save Docker Image as Artifact
-        run: docker save github_actions_fastapi_app:${{ steps.vars.outputs.IMAGE_TAG }} -o github_actions_fastapi_app.tar
+        run: docker save github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }} -o github_actions_fastapi_app.tar
 
       - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v7.0.0
@@ -140,10 +140,9 @@ jobs:
       - name: Tag Image
         run: |
           IMAGE_TAG="${{ needs.build.outputs.image-tag }}"
-          docker image tag github_actions_fastapi_app:$IMAGE_TAG ${DOCKERHUB_USERNAME}/github_actions_fastapi_app:$IMAGE_TAG
+          docker image tag github-actions-fastapi-app:$IMAGE_TAG ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-fastapi-app:$IMAGE_TAG
       - name: Push Image
         run: |
           IMAGE_TAG="${{ needs.build.outputs.image-tag }}"
-          docker image push ${DOCKERHUB_USERNAME}/github_actions_fastapi_app:$IMAGE_TAG
-
+          docker image push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-fastapi-app:$IMAGE_TAG
         
