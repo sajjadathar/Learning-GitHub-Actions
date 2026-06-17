@@ -25,11 +25,11 @@ jobs:
         uses: astral-sh/setup-uv@v7.0.0
       
       - name: Install Dependencies
-        run: uv sync
+        run: uv sync --frozen --no-build
       - name: Run Unit Test
         run: |
           mkdir -p reports/
-          uv run pytest --junitxml=reports/unit-tests-results.xml --cov=. --cov-report=term-missing -v
+          uv run --frozen pytest --junitxml=reports/unit-tests-results.xml --cov=. --cov-report=term-missing -v
       - name: Upload Code Coverage Report
         uses: actions/upload-artifact@v7.0.0
         with: 
