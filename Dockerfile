@@ -28,4 +28,4 @@ USER appuser
 
 EXPOSE 8080
 
-CMD ["uv", "run", "--frozen", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uv", "run", "--frozen", "--no-build", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
