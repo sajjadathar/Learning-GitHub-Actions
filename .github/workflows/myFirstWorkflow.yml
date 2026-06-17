@@ -108,7 +108,7 @@ jobs:
         with: 
           context: .
           file: ./Dockerfile
-          tags: github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }}
+          tags: github_actions_fastapi_app:${{ steps.vars.outputs.IMAGE_TAG }}
           push: false
           load: true
       - name: Save Docker Image as Artifact
