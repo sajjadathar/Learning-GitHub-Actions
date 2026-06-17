@@ -100,7 +100,7 @@ jobs:
       - name: Generate Image Tag
         id: vars
         run: |
-          IMAGE_TAG="${{ github.run_id }}-${ GITHUB_SHA::8 }"
+          IMAGE_TAG="${{ github.repository_id }}-${GITHUB_SHA::8}"
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Build Image (no push)
