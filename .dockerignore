@@ -33,4 +33,3 @@ Dockerfile
 
 # Ignore uv cache
 .uv/
-uv.lock
