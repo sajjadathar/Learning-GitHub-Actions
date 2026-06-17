@@ -1,4 +1,4 @@
-name: my-first-workflow
+name: CI Pipeline
 # To get trigger on every push in this repo in any branch
 on:
   push:
@@ -110,8 +110,9 @@ jobs:
           file: ./Dockerfile
           tags: github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }}
           push: false
+          load: true
       - name: Save Docker Image as Artifact
-        run: docker save github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }} -o docker save github-actions-fastapi-app.tar
+        run: docker save github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }} -o github-actions-fastapi-app.tar
 
       - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v7.0.0
