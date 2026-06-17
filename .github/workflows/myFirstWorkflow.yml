@@ -112,10 +112,38 @@ jobs:
           push: false
           load: true
       - name: Save Docker Image as Artifact
-        run: docker save github-actions-fastapi-app:${{ steps.vars.outputs.IMAGE_TAG }} -o github-actions-fastapi-app.tar
+        run: docker save github_actions_fastapi_app:${{ steps.vars.outputs.IMAGE_TAG }} -o github_actions_fastapi_app.tar
 
       - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v7.0.0
         with:
-          name: github-actions-fastapi-app-image
-          path: github-actions-fastapi-app.tar
+          name: github_actions_fastapi_app_image
+          path: github_actions_fastapi_app.tar
+
+  publish-dockerhub:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download the Image
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: github_actions_fastapi_app_image
+          path: .
+      - name: Load Docker Image
+        run: docker load -i github_actions_fastapi_app.tar
+      - name: Login to Docker Hub
+        uses: docker/login-action@vv4.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Tag Image
+        run: |
+          IMAGE_TAG="${{ needs.build.outputs.image-tag }}"
+          docker image tag github_actions_fastapi_app:$IMAGE_TAG ${DOCKERHUB_USERNAME}/github_actions_fastapi_app:$IMAGE_TAG
+      - name: Push Image
+        run: |
+          IMAGE_TAG="${{ needs.build.outputs.image-tag }}"
+          docker image push ${DOCKERHUB_USERNAME}/github_actions_fastapi_app:$IMAGE_TAG
+
+        
