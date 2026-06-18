@@ -1,5 +1,5 @@
 name: CI Pipeline
-# To get trigger on every push in this repo in any branch
+# To get trigger on every push in this repo in main branch
 on:
   push:
     branches: 
