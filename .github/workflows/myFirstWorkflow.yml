@@ -7,11 +7,19 @@ on:
   pull_request:
     branches:
       - main
+permissions:
+  contents: read
+  security-events: write
+  packages: write
+  actions: read
 
 jobs:
   ci-pipeline-job:
+
     uses: sajjadathar/reusable-workflows/.github/workflows/ci-pipeline.yml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
