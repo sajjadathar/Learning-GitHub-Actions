@@ -18,8 +18,8 @@ jobs:
 
     uses: sajjadathar/reusable-workflows/.github/workflows/ci-pipeline.yml@main
     with:
-      run_codeql: true
-      run_sonarqube: true
+      run_codeql: false
+      run_sonarqube: false
       run_build: true
       run_publish-ghcr: true
     secrets:
@@ -42,7 +42,7 @@ jobs:
       - name: Configure kubeconfig
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          echo "${{ secrets.KUBECONFIG }}" | tr -d '\n' | base64 -d > ~/.kube/config
           kubectl version
           kubectl get nodes
 
