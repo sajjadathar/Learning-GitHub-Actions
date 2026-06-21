@@ -1,5 +1,5 @@
-name: my-first-workflow
-# To get trigger on every push in this repo in any branch
+name: CI Pipeline
+# To get trigger on every push in this repo in main branch
 on:
   push:
     branches: 
@@ -7,92 +7,23 @@ on:
   pull_request:
     branches:
       - main
-env:
-  ENV_TYPE: DEV
-  APP_USER: thinknyx
-  APP_PORT: 80
+permissions:
+  contents: read
+  security-events: write
+  packages: write
+  actions: read
+
 jobs:
-  job1:  
-    name: JOB1
-    runs-on: ubuntu-latest
-    steps:
-      - name: step-1
-        run: |
-          pwd
-          ls -ltr
-          hostname
-      - name: step-2 - checkout
-        uses: actions/checkout@v6.0.3
-      - name: step-3
-        run: |
-          echo 'pwd' >> myartifact.txt
-          mkdir artifacts
-          echo 'ls -ltr' >> artifacts/list.txt
-          echo 'hostname' >> artifacts/hostname.txt
-      - name: upload single file
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: single_file
-          path: ./myartifact.txt
-  job2:  
-    name: JOB2
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: checking current directory
-        run: |
-          pwd
-          ls -ltr
-      - name: download single file
-        uses: actions/download-artifact@v8.0.0
-        with:
-          name: single_file
-      - name: Refering Environment variables
-        run:  |
-          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
-          echo "[INFO] once deployed the application will be accessable at $APP_PORT."
-      - name: Referring Repository Secret
-        run: |
-          echo "Application password is ${{ secrets.APP_PASSWORD }}"
-      - name: checking current directory post download
-        run: |
-          pwd
-          ls -ltr
-      - name: Step for PR Demo
-        run: exit 0
-  job3:
-    name: JOB3
-    runs-on: ubuntu-latest
-    steps:
-      - name: Referring context or in-built variables
-        run: |
-          echo "[info] Triggered by ${{ github.event_name }}"
-          echo "[info] New changes are added by ${{ github.actor }} in ${{ github.head_ref }}."
-          echo "[Ingo] current step in running on ${{ runner.os }}"
-          echo "[Info] Current job ID is ${{ job.check_run_id }}"
+  ci-pipeline-job:
 
-  staging:
-    name: STAGE DEPLOYMENT
-    runs-on: ubuntu-latest
-    steps:
-      - name: Referring Environment Variables
-        run: echo "[Info] Running deployments on ${{ vars.HOST }} using ${{ vars.USER }}"
-      - name: Referring Environment Secrets
-        run: echo "[Info] Passord for ${{ vars.USER }} is ${{ secrets.PASSWORD }}"
-    environment: 
-      name: STAGING
-    if: github.head_ref == 'dev'
+    uses: sajjadathar/reusable-workflows/.github/workflows/ci-pipeline.yml@main
+    with:
+      run_codeql: true
+      run_sonarqube: true
+      run_build: false
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  production:
-    name: PRODUCTION DEPLOYMENT
-    runs-on: ubuntu-latest
-    steps:
-      - name: Referring Environment Variables
-        run: echo "[Info] Running deployments on ${{ vars.HOST }} using ${{ vars.USER }}"
-      - name: Referring Environment Secrets
-        run: echo "[Info] Passord for ${{ vars.USER }} is ${{ secrets.PASSWORD }}"
-    environment: 
-      name: PRODUCTION
-    if: github.ref == 'refs/heads/main'
-    
-  
+
