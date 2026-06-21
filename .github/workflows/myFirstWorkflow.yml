@@ -31,7 +31,7 @@ jobs:
     needs: ci-pipeline-job
     runs-on: github-actions-scaleset-demo
     steps:
-      - name: Checkout code
+      - name: Checkout code Reository
         uses: actions/checkout@v6.0.3
       - name: Install kubectl
         run: |
