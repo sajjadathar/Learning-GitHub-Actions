@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v6.0.3
       - name: Install kubectl
         run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          curl --proto '=https' --tlsv1.2 -LO "https://dl.k8s.io/release/$(curl --proto '=https' --tlsv1.2 -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
           kubectl version --client
