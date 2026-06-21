@@ -16,6 +16,7 @@ spec:
       labels:
         app: sajjadathar-app
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: sajjadathar
           image: ghcr.io/sajjadathar/github-actions-fastapi-app:1256964986-bc8e7f6d
@@ -24,7 +25,7 @@ spec:
           resources:
             requests:
               memory: "64Mi"
-              cpu: "50m"
+              cpu: "100m"
             limits:
               memory: "128Mi"
               cpu: "250m"
