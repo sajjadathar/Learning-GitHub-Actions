@@ -28,6 +28,7 @@ jobs:
             lsb_release -a || cat /etc/os-release
             echo "Runner Name: ${{ runner.name }}"
             echo "Runner OS: ${{ runner.os }}"
+            sleep 30
 
             
     
