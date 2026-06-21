@@ -26,6 +26,7 @@ spec:
             requests:
               memory: "64Mi"
               cpu: "100m"
+              ephemeral-storage: "256Mi"   # ← add this
             limits:
               memory: "128Mi"
               cpu: "250m"
