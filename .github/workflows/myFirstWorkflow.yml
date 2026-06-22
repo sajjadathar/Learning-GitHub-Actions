@@ -45,5 +45,14 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
           kubectl version
           kubectl get nodes
-
-
+      - name: Install yq
+        run: |
+          sudo curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+      - name: Update Image name in deployment.yml
+        run: |
+          IMAGE_TAG="${{ github.run_id }}-${GITHUB_SHA::7}"
+          IMAGE="ghcr.io/sajjadathar/github-actions-fastapi-app:${IMAGE_TAG}"
+          yq e '.spec.template.spec.containers[0].image = strenv(IMAGE)' manifests/deployment.yml -i
+          cat manifests/deployment.yml
