@@ -17,6 +17,7 @@ jobs:
   ci-pipeline-job:
 
     uses: sajjadathar/reusable-workflows/.github/workflows/ci-pipeline.yml@main
+
     with:
       run_codeql: false
       run_sonarqube: false
@@ -52,7 +53,6 @@ jobs:
           yq --version
       - name: Update Image name in deployment.yml
         run: |
-          IMAGE_TAG="${{ github.run_id }}-${GITHUB_SHA::7}"
-          export IMAGE="ghcr.io/sajjadathar/github-actions-fastapi-app:${IMAGE_TAG}"
+          export IMAGE="ghcr.io/${{ github.repository_owner }}/github-actions-fastapi-app:${{ needs.ci-pipeline-job.outputs.image-tag }}"
           yq e '.spec.template.spec.containers[0].image = strenv(IMAGE)' manifests/deployment.yml -i
           cat manifests/deployment.yml
