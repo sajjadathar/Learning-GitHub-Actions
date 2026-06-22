@@ -53,6 +53,6 @@ jobs:
       - name: Update Image name in deployment.yml
         run: |
           IMAGE_TAG="${{ github.run_id }}-${GITHUB_SHA::7}"
-          IMAGE="ghcr.io/sajjadathar/github-actions-fastapi-app:${IMAGE_TAG}"
+          export IMAGE="ghcr.io/sajjadathar/github-actions-fastapi-app:${IMAGE_TAG}"
           yq e '.spec.template.spec.containers[0].image = strenv(IMAGE)' manifests/deployment.yml -i
           cat manifests/deployment.yml
