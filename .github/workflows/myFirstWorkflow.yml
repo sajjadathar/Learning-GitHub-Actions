@@ -19,8 +19,8 @@ jobs:
     uses: sajjadathar/reusable-workflows/.github/workflows/ci-pipeline.yml@main
 
     with:
-      run_codeql: false
-      run_sonarqube: false
+      run_codeql: true
+      run_sonarqube: true
       run_build: true
       run_publish-ghcr: true
     secrets:
