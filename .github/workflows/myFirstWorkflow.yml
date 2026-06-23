@@ -69,6 +69,6 @@ jobs:
           kubectl apply -f manifests/ -n $NAMESPACE
       - name: Verify Deployment
         run: |
-          kubectl rollout status deployment/sajjadathar-app -n $NAMESPACE
+          kubectl rollout status deployment/sajjadathar-deployment -n $NAMESPACE
           kubectl get all -n $NAMESPACE
           
