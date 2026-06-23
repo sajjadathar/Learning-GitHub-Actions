@@ -29,6 +29,10 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   defploy-with-kubectl:
+    environment: STAGING
+    env:
+      NAMESPACE: ${{ vars.NAMESPACE }}
+
     needs: ci-pipeline-job
     runs-on: github-actions-scaleset-demo
     steps:
@@ -56,3 +60,15 @@ jobs:
           export IMAGE="ghcr.io/${{ github.repository_owner }}/github-actions-fastapi-app:${{ needs.ci-pipeline-job.outputs.image-tag }}"
           yq e '.spec.template.spec.containers[0].image = strenv(IMAGE)' manifests/deployment.yml -i
           cat manifests/deployment.yml
+
+      - name: Create Namespace if not exist
+        run: |
+          kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+      - name: Deploy to Kubernetes Cluster
+        run: |
+          kubectl apply -f manifests/ -n $NAMESPACE
+      - name: Verify Deployment
+        run: |
+          kubectl rollout status deployment/sajjadathar-app -n $NAMESPACE
+          kubectl get all -n $NAMESPACE
+          
