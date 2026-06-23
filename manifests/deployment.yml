@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: sajjadathar-deployment
+  labels:
+    app: sajjadathar-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sajjadathar-app
+  template:
+    metadata:
+      labels:
+        app: sajjadathar-app
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: sajjadathar
+          image: ghcr.io/sajjadathar/github-actions-fastapi-app:1256964986-bc8e7f6d
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+              ephemeral-storage: "256Mi"   # ← add this
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
